@@ -35,26 +35,56 @@ petrol_at_1500 = polyval(p3,1500)           % PETROL
 
 % Graph
 figure
-subplot(3,1,1); hold on;
+subplot(3,2,1); hold on;
 plot(EFI_rpm,EFI_bhp,'rx',EFI_rpm,eb_p);
 plot(1500,efi_at_1500,'o','MarkerSize',6,'Linewidth',2); hold off;
 xlabel('Speed(rpm)'); ylabel('Power (bhp)');
-title('EFI Engine'); grid;
+title('EFI Engine (Quardatic)'); grid;
 legend('Given Data','Model','BHP at 1500');
 
-subplot(3,1,2); hold on;
+subplot(3,2,3); hold on;
 plot(DIESEL_rpm,DIESEL_bhp,'rx',DIESEL_rpm,db_p)
 plot(1500,diesel_at_1500,'o','MarkerSize',6,'Linewidth',2); hold off;
 xlabel('Speed(rpm)'); ylabel('Power (bhp)');
-title('DIESEL Engine'); grid;
+title('DIESEL Engine (Quardatic)'); grid;
 legend('Given Data','Model','BHP at 1500');
 
-subplot(3,1,3); hold on;
+subplot(3,2,5); hold on;
 plot(PETROL_rpm,PETROL_bhp,'rx',PETROL_rpm,pb_p)
 plot(1500,petrol_at_1500,'o','MarkerSize',6,'Linewidth',2); hold off;
 xlabel('Speed(rpm)'); ylabel('Power (bhp)');
-title('PETROL Engine'); grid;
+title('PETROL Engine (Quardatic)'); grid;
 legend('Given Data','Model','BHP at 1500');
+
+% Linear Relation
+% For curve fitting using polyfit function
+pl1 = polyfit(EFI_rpm,EFI_bhp,1);
+pl2 = polyfit(DIESEL_rpm,DIESEL_bhp,1);
+pl3 = polyfit(PETROL_rpm,PETROL_bhp,1);
+
+% New bhp values after curve fitting
+eb_lp = polyval(pl1,EFI_rpm);                 % EFI
+db_lp = polyval(pl2,DIESEL_rpm);              % DIESEL
+pb_lp = polyval(pl3,PETROL_rpm);              % PETROL
+
+% Graph
+subplot(3,2,2);
+plot(EFI_rpm,EFI_bhp,'rx',EFI_rpm,eb_lp);
+xlabel('Speed(rpm)'); ylabel('Power (bhp)');
+title('EFI Engine (Linear)'); grid;
+legend('Given Data','Model');
+
+subplot(3,2,4);
+plot(DIESEL_rpm,DIESEL_bhp,'rx',DIESEL_rpm,db_lp)
+xlabel('Speed(rpm)'); ylabel('Power (bhp)');
+title('DIESEL Engine (Linear)'); grid;
+legend('Given Data','Model');
+
+subplot(3,2,6);
+plot(PETROL_rpm,PETROL_bhp,'rx',PETROL_rpm,pb_lp)
+xlabel('Speed(rpm)'); ylabel('Power (bhp)');
+title('PETROL Engine (Linear)'); grid;
+legend('Given Data','Model');
 
 %%                              QUESTION 02
 % log(IT) = - beta*L + log(Io*(1-R)^2) 
@@ -92,7 +122,7 @@ I_Tp = F(Lp);
 figure
 plot(L,I_T,'ro',Lp,I_Tp)
 xlabel('L (cm)'); ylabel('I_T (W/m^2)')
-legend('Given Data','Model')
+legend('Given Data','Model'); grid;
 title('Intensity of light through transparent solid')
 
 % Absorption coefficient & Index of refraction Values writen on graph
